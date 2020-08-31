@@ -1,0 +1,54 @@
+﻿<Window x:Class="YunQiaoWeShi.Splash"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="进度提示" Height="auto" MaxHeight="600" Width="599" MaxWidth="660" WindowStyle="None"  
+        SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <Storyboard x:Key="waiting" Name="waiting">
+            <DoubleAnimation Storyboard.TargetName="SpinnerRotate" Storyboard.TargetProperty="(RotateTransform.Angle)" 
+                             From="0" To="359" Duration="0:0:02" RepeatBehavior="Forever" />
+        </Storyboard>
+        <Style x:Key="LogoFont">
+            <Setter Property="TextElement.FontFamily" Value="Resources/#Gill Sans MT Ultra Bold"/>
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <ImageBrush ImageSource="images/bg5.png" />
+    </Window.Background>
+    <Border  BorderThickness="2"  BorderBrush="SlateGray">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*"  />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" ></RowDefinition>
+                <RowDefinition Height="Auto" MinHeight="118" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" Background="White" 
+                    MouseLeftButtonDown="StackPanel_MouseLeftButtonDown">
+                <!--<Image Name="image2" Stretch="None"  Width="auto" Height="auto" Margin="60,5" HorizontalAlignment="Left" 
+                   Source="/MyClient;component/Images/logo.png" />-->
+                <Label Name="lblBrand" FontSize="45"  Foreground="#FF1E9CD1" Content="FAMSUN"      
+                   Width="Auto" HorizontalAlignment="Left" Margin="20,0,0,5"
+                   VerticalContentAlignment="Center"  Style="{StaticResource LogoFont}"/>
+                <Label FontSize="36"  Foreground="#FF16839D" FontWeight="Bold" Content="缔造系统价值"      
+                   Width="Auto" HorizontalAlignment="Left" Margin="40,20,0,0"
+                   VerticalContentAlignment="Center"  Style="{StaticResource LogoFont}"/>
+            </StackPanel>
+            <Image  Grid.Row="1" Name="image1" HorizontalAlignment="Right" Margin="0" Stretch="None" VerticalAlignment="Center"  
+               Height="50" Width="50"  RenderTransformOrigin="0.5,0.5" Source="images/loading.gif"
+               >
+                <Image.RenderTransform>
+                    <RotateTransform x:Name="SpinnerRotate" Angle="0" />
+                </Image.RenderTransform>
+            </Image>
+            <StackPanel Grid.Column="1" Grid.Row="1" Width="auto" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock   Name="txtInfo" Text="进度信息" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                         MaxWidth="400" TextWrapping="Wrap"/>
+                <ProgressBar MinHeight="20" HorizontalAlignment="Center" Name="progressBar" Margin="10,10" 
+                         VerticalAlignment="Center" MinWidth="360" OverridesDefaultStyle="False"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

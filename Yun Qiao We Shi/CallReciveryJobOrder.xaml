@@ -1,0 +1,273 @@
+﻿<UserControl x:Class="YunQiaoWeShi.CallReciveryJobOrder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
+    <UserControl.Resources>
+
+        <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+            <Style TargetType="DataGrid">
+                <!--网格线颜色-->
+                <Setter Property="CanUserResizeColumns" Value="false"/>
+                <Setter Property="Background" Value="#E6DBBB"/>
+                <Setter Property="BorderBrush" Value="#d6c79b"/>
+                <Setter Property="HorizontalGridLinesBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#d6c79b"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="VerticalGridLinesBrush">
+                    <Setter.Value>
+                        <SolidColorBrush Color="#d6c79b"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="SnapsToDevicePixels" Value="True"/>
+                <Setter Property="MinWidth" Value="0"/>
+                <Setter Property="MinHeight" Value="45"/>
+                <Setter Property="Foreground" Value="#323433"/>
+                <Setter Property="FontSize" Value="34"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="DataGridColumnHeader">
+                            <Border x:Name="BackgroundBorder" BorderThickness="0,1,0,1" 
+                             BorderBrush="#e6dbba" 
+                              Width="Auto">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentPresenter  Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <Path x:Name="SortArrow" Visibility="Collapsed" Data="M0,0 L1,0 0.5,1 z" Stretch="Fill"  Grid.Column="2" Width="8" Height="6" Fill="White" Margin="0,0,50,0" 
+                            VerticalAlignment="Center" RenderTransformOrigin="1,1"/>
+                                    <Rectangle Width="1" Fill="#d6c79b" HorizontalAlignment="Right" Grid.ColumnSpan="1"/>
+                                    <!--<TextBlock  Background="Red">
+                            <ContentPresenter></ContentPresenter></TextBlock>-->
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Height" Value="25"/>
+            </Style>
+            <!--行样式触发-->
+            <!--背景色改变必须先设置cellStyle 因为cellStyle会覆盖rowStyle样式-->
+            <Style  TargetType="DataGridRow">
+                <Setter Property="Background" Value="#F2F2F2"/>
+                <Setter Property="Height" Value="45"/>
+                <Setter Property="Foreground" Value="Black"/>
+                <Style.Triggers>
+                    <!--隔行换色-->
+                    <Trigger Property="AlternationIndex" Value="0">
+                        <Setter Property="Background" Value="#e7e7e7"/>
+                    </Trigger>
+                    <Trigger Property="AlternationIndex" Value="1">
+                        <Setter Property="Background" Value="#f2f2f2"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="LightGray"/>
+                        <!--<Setter Property="Foreground" Value="White"/>-->
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!--单元格样式触发-->
+            <Style TargetType="DataGridCell">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="DataGridCell">
+                            <TextBlock TextAlignment="Center" VerticalAlignment="Center"><ContentPresenter /></TextBlock>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <!--<Setter Property="Background" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>-->
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CheckBoxStyle" TargetType="{x:Type CheckBox}">
+                <Setter Property="SnapsToDevicePixels" Value="true" />
+                <Setter Property="OverridesDefaultStyle" Value="False" />
+                <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
+                <Setter Property="Height" Value="52"/>
+                <Setter Property="IsChecked" Value="False"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="CheckBox">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Height}">
+                                    <Rectangle x:Name="CheckBoxRectangle" Fill="White" Opacity="0.3" RadiusY="5" RadiusX="5"/>
+                                    <Rectangle x:Name="CheckBoxRectangleOut" Stroke="#FFABADB3" StrokeThickness="1" RadiusY="5" RadiusX="5"/>
+                                    <Grid x:Name="CheckedMark" Height="{TemplateBinding Height}" Width="{TemplateBinding Height}" Visibility="Collapsed" >
+                                        <Viewbox>
+                                            <Grid>
+                                                <Path SnapsToDevicePixels="True" StrokeThickness="3" Data="M1,9 L10,17" Stroke="#009900"/>
+                                                <Path SnapsToDevicePixels="True" StrokeThickness="3" Data="M8,17 L20,4" Stroke="#009900"/>
+                                            </Grid>
+                                        </Viewbox>
+                                    </Grid>
+                                </Grid>
+                                <ContentPresenter Grid.Column="0" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="CheckedMark" Property="Visibility" Value="Visible"></Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="1920">
+        <Border BorderThickness="5" BorderBrush="#FF044D22">
+            <StackPanel VerticalAlignment="Center" >
+                <StackPanel Orientation="Horizontal" Background="#FF199475"  >
+                    <Button Width="90" Click="Button_Click_1" Visibility="Collapsed">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF358620" Offset="0"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Image  Source="images/Arrow_Up.png" RenderTransformOrigin="0.5,0.5" Visibility="Collapsed" >
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                    </Button>
+                    <Label Content="原料激活未待检订单浏览" HorizontalContentAlignment="Center" FontSize="38"  Foreground="White" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="1841"  />
+                    <Button x:Name="button12" Content="打印定制" FontSize="40" HorizontalAlignment="Left" Height="86"  Grid.Row="2" VerticalAlignment="Bottom" Width="237"   Foreground="White" BorderBrush="White" Margin="0,0,0,0"  Visibility="Visible" Click="Button_Click_2">
+                        <Button.OpacityMask>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFACE0CB" Offset="0"/>
+                                <GradientStop Color="#FFACE0CB" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.OpacityMask>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF4F9F7" Offset="0"/>
+                                <GradientStop Color="#FFF0F9F5" Offset="0.992"/>
+                                <GradientStop Color="#FFEE962C" Offset="0.912"/>
+                                <GradientStop Color="#FFD3B016" Offset="0.056"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  >
+                    <Label Width="200" FontSize="25" Content="{Binding CardManage.CarNumber,Mode=TwoWay}"></Label>
+                    <Label Width="200" FontSize="25" Content="{Binding CardManage.Driver,Mode=TwoWay}"></Label>
+                    <Label Width="300" FontSize="25" Content="{Binding CardManage.DriverIDCard,Mode=TwoWay}"></Label>
+                    <Label Width="400" FontSize="25" Content="{Binding ReceivingJobViewModel.ErpID,Mode=TwoWay}"></Label>
+                </StackPanel>
+                <DataGrid x:Name="groupInformationShow"    FontSize="35" Background="#FFC7CEB2"  ItemsSource="{Binding CallReciveryJobOrders,Mode=OneWay}" AutoGenerateColumns="False" Height="700" 
+                  CanUserResizeColumns="False" CanUserResizeRows="False"   HorizontalAlignment="Stretch"  SelectionMode="Single" ColumnHeaderHeight="60" Foreground="#474747" 
+                  CanUserReorderColumns="False"   RowHeaderWidth="0" CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Width="5*"  >
+                            <DataGridTemplateColumn.Header>
+                                <Label  >✔</Label>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox HorizontalAlignment="Left" IsChecked="{Binding Path=Isselect,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource CheckBoxStyle}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="序号" Width ="7*"  Binding="{Binding Path=Number,Mode=TwoWay}"  MinWidth="50" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="车牌号" Width ="15*"  Binding="{Binding Path=CarNumber,Mode=TwoWay}"  MinWidth="200" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="收料通知单单号" Width ="30*"  Binding="{Binding Path=Notifyerpid,Mode=TwoWay}"  MinWidth="350" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="提货任务单号" Width ="20*"  Binding="{Binding Path=TaskErpid,Mode=TwoWay}"  MinWidth="300" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="原料名" Width ="10*"  Binding="{Binding Path=Mariteral,Mode=TwoWay}"  MinWidth="400" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="状态" Width ="15*"  Binding="{Binding Path=Sates,Mode=TwoWay}"  MinWidth="200" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="激活时间" Width ="25*"  Binding="{Binding Path=CreateTime,Mode=TwoWay}"  MinWidth="500" IsReadOnly="True"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Width="963" >
+                    <Button x:Name="button11" Content="打印条码" FontSize="40" HorizontalAlignment="Left" Height="69"  Grid.Row="2" VerticalAlignment="Bottom" Width="237"   Foreground="White" BorderBrush="White" Margin="0,0,0,0"  Visibility="Visible" Click="button11_Click">
+                        <Button.OpacityMask>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFACE0CB" Offset="0"/>
+                                <GradientStop Color="#FFACE0CB" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.OpacityMask>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF4F9F7" Offset="0"/>
+                                <GradientStop Color="#FFF0F9F5" Offset="0.992"/>
+                                <GradientStop Color="#FFEE962C" Offset="0.912"/>
+                                <GradientStop Color="#FFD3B016" Offset="0.056"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="button1" Content="查询订单" FontSize="40" HorizontalAlignment="Left" Height="69"  Grid.Row="2" VerticalAlignment="Bottom" Width="237"   Foreground="White" BorderBrush="White" Margin="0,0,0,0" Click="button1_Click" Visibility="Collapsed">
+                        <Button.OpacityMask>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFACE0CB" Offset="0"/>
+                                <GradientStop Color="#FFACE0CB" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.OpacityMask>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF4F9F7" Offset="0"/>
+                                <GradientStop Color="#FFF0F9F5" Offset="0.992"/>
+                                <GradientStop Color="#FFEE962C" Offset="0.912"/>
+                                <GradientStop Color="#FFD3B016" Offset="0.056"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="button" Content="呼叫送检" FontSize="40" HorizontalAlignment="Left" Height="69"  Grid.Row="2" VerticalAlignment="Bottom" Width="237"   Foreground="White" BorderBrush="White" Margin="100,0,0,0" Click="button_Click" >
+                        <Button.OpacityMask>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFACE0CB" Offset="0"/>
+                                <GradientStop Color="#FFACE0CB" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.OpacityMask>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF4F9F7" Offset="0"/>
+                                <GradientStop Color="#FFF0F9F5" Offset="0.992"/>
+                                <GradientStop Color="#FFEE962C" Offset="0.912"/>
+                                <GradientStop Color="#FFD3B016" Offset="0.056"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="button2" Content="检验通过" FontSize="40" HorizontalAlignment="Left" Height="69"  Grid.Row="2" VerticalAlignment="Bottom" Width="261"   Foreground="White" BorderBrush="White" Margin="100,0,0,0" Click="button2_Click" >
+                        <Button.OpacityMask>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFACE0CB" Offset="0"/>
+                                <GradientStop Color="#FFACE0CB" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.OpacityMask>
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF4F9F7" Offset="0"/>
+                                <GradientStop Color="#FFF0F9F5" Offset="0.992"/>
+                                <GradientStop Color="#FFEE962C" Offset="0.912"/>
+                                <GradientStop Color="#FFD3B016" Offset="0.056"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Viewbox>
+</UserControl>
